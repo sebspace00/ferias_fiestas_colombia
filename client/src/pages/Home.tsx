@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
 import { events, territorios, Event } from "@/data/events";
 import { EventCard } from "@/components/EventCard";
+import { EventCalendar } from "@/components/EventCalendar";
+import { EventMap } from "@/components/EventMap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,12 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, Filter, X } from "lucide-react";
+import { Search, Filter, X, Calendar, Map } from "lucide-react";
 
 export default function Home() {
   const [selectedTerritorio, setSelectedTerritorio] = useState<string>("");
   const [selectedMes, setSelectedMes] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<"eventos" | "calendario" | "mapa">("eventos");
 
   // Filtered events
   const filteredEvents = useMemo(() => {
@@ -172,6 +175,49 @@ export default function Home() {
               </Button>
             </div>
           )}
+
+          {/* Tabs */}
+          <div className="mt-12 border-t border-border pt-8">
+            <div className="flex gap-2 mb-8">
+              <button
+                onClick={() => setActiveTab("eventos")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  activeTab === "eventos"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                <Search className="w-4 h-4" />
+                Eventos
+              </button>
+              <button
+                onClick={() => setActiveTab("calendario")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  activeTab === "calendario"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                <Calendar className="w-4 h-4" />
+                Calendario
+              </button>
+              <button
+                onClick={() => setActiveTab("mapa")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  activeTab === "mapa"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                <Map className="w-4 h-4" />
+                Mapa
+              </button>
+            </div>
+
+            {/* Tab Content */}
+            {activeTab === "calendario" && <EventCalendar events={filteredEvents} />}
+            {activeTab === "mapa" && <EventMap events={filteredEvents} />}
+          </div>
 
           {/* Footer Info */}
           <div className="mt-12 pt-8 border-t border-border">
