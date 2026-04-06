@@ -216,7 +216,11 @@ export default function Home() {
 
             {/* Tab Content */}
             {activeTab === "calendario" && <EventCalendar events={filteredEvents} />}
-            {activeTab === "mapa" && <EventMap events={filteredEvents} />}
+            {activeTab === "mapa" && (
+  <div className="p-6 text-center">
+    Mapa desactivado temporalmente
+  </div>
+)}
           </div>
 
           {/* Footer Info */}
